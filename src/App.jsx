@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, createContext, useContext } from 'react'
+import shymenLogo from './assets/shymen-logo.jpeg'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -434,7 +435,7 @@ function HeroSection() {
       <motion.div style={{ y: wrapY, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 2 }} variants={stagger} initial="hidden" animate="visible">
         <motion.div style={{ scale: logoScale, opacity: logoOpacity }} variants={item}>
           <motion.img
-            src={`${import.meta.env.BASE_URL}assets/shymen-logo.png`} alt="Shymen Records"
+            src={shymenLogo} alt="Shymen Records"
             animate={{ rotate: [0, 1.2, -1.2, 0], y: [0, -10, 0] }}
             transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
             style={{ width: 'clamp(200px, 34vw, 400px)', height: 'auto', filter: `drop-shadow(0 0 50px ${C.blueGlow}) drop-shadow(0 0 100px rgba(53,82,252,0.18))` }}
