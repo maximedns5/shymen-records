@@ -294,32 +294,26 @@ function Mark({ children, type = 'underline', color = C.blue, elRef }) {
   return <span ref={ref} style={{ display: 'inline' }}>{children}</span>
 }
 
-/* ─── LOGO LINES LAYER — dramatic full-width zigzag ────────────────────────── */
+/* ─── LOGO LINES LAYER — 8 interweaving zigzag lines ───────────────────────── */
 function LogoLinesLayer({ pageH }) {
   const svgRef = useRef(null)
 
   useEffect(() => {
     if (!svgRef.current || pageH === 0) return
-    const paths  = Array.from(svgRef.current.querySelectorAll('.lp'))
+    const paths    = Array.from(svgRef.current.querySelectorAll('.lp'))
     const triggers = []
 
     paths.forEach((path, i) => {
       const len = path.getTotalLength()
       gsap.set(path, { strokeDasharray: len, strokeDashoffset: len })
-
-      /* stagger start so lines don't all begin simultaneously */
-      const startPct = 2 + i * 4
-      const endPct   = 85
-
+      const startPct = 1.5 + i * 0.6   // tight stagger so lines cascade in
       triggers.push(
         ScrollTrigger.create({
           trigger: 'body',
           start: `${startPct}% top`,
-          end:   `${endPct}% top`,
-          scrub: 2,
-          onUpdate: self => {
-            gsap.set(path, { strokeDashoffset: len * (1 - self.progress) })
-          },
+          end:   '88% top',
+          scrub: 2 + i * 0.15,           // slight scrub variance for depth
+          onUpdate: self => gsap.set(path, { strokeDashoffset: len * (1 - self.progress) }),
         })
       )
     })
@@ -331,66 +325,50 @@ function LogoLinesLayer({ pageH }) {
 
   const W = 1440
   const H = pageH
-  /* zig-zag anchor Y positions — one zag every ~13% of page */
-  const L = 30           /* left margin  */
-  const R = W - 30       /* right margin */
-  const y = (pct) => H * pct
 
   /*
-   * PATH DESIGN:  starts at logo centre → zigzags WIDE left↔right,
-   * each leg spans the full viewport width so it's unmissable.
-   * Smooth cubic beziers give an organic feel.
+   * mkZig — generates a full-width zigzag cubic-bezier path.
+   *   goRight : first turn direction
+   *   margin  : how close to each edge the line reaches
+   *   sy      : start Y (near logo)
+   *   dy      : fractional offset applied to every Y anchor (creates interleave)
    */
+  const mkZig = (goRight, margin, sy, dy = 0) => {
+    const L = margin
+    const R = W - margin
+    // Y anchor percentages for each turn — 7 turns across the page
+    const anchors = [0.130, 0.260, 0.390, 0.520, 0.650, 0.780, 0.920].map(p => H * (p + dy))
+    const xs = goRight ? [R, L, R, L, R, L, R] : [L, R, L, R, L, R, L]
+    let d = `M 720 ${sy}`
+    anchors.forEach((y, i) => {
+      const px = i === 0 ? 720    : xs[i - 1]
+      const py = i === 0 ? sy     : anchors[i - 1]
+      const x  = xs[i]
+      const mid = (py + y) / 2
+      d += ` C ${px} ${mid} ${x} ${mid} ${x} ${y}`
+    })
+    return d
+  }
 
-  /* Main line — blue, thick */
-  const mainD = [
-    `M 720 360`,
-    /* → right */
-    `C 1100 ${y(0.07)}, ${R} ${y(0.10)}, ${R} ${y(0.13)}`,
-    /* → left  */
-    `C ${R} ${y(0.16)}, ${L} ${y(0.23)}, ${L} ${y(0.26)}`,
-    /* → right */
-    `C ${L} ${y(0.29)}, ${R} ${y(0.36)}, ${R} ${y(0.39)}`,
-    /* → left  */
-    `C ${R} ${y(0.42)}, ${L} ${y(0.49)}, ${L} ${y(0.52)}`,
-    /* → right */
-    `C ${L} ${y(0.55)}, ${R} ${y(0.62)}, ${R} ${y(0.65)}`,
-    /* → left  */
-    `C ${R} ${y(0.68)}, ${L} ${y(0.75)}, ${L} ${y(0.78)}`,
-    /* → centre finish */
-    `C ${L} ${y(0.81)}, 720 ${y(0.90)}, 720 ${y(0.93)}`,
-  ].join(' ')
+  /*
+   * 4 blue lines (right-first) + 4 purple lines (left-first)
+   * Each group fans out in margin & dy so they interweave at crossings.
+   *
+   *  [stroke, opacity, color, goRight, margin, startY, dyOffset]
+   */
+  const LINES = [
+    // ── Blue bundle (right-first) ──────────────────────────────
+    [3.5, 0.90, C.blue,   true,  22,  355,  0.000],   // B1 lead
+    [2.5, 0.65, C.blue,   true,  55,  372,  0.010],   // B2
+    [1.8, 0.38, C.blue,   true,  88,  389,  0.020],   // B3
+    [1.0, 0.20, C.blue,   true,  14,  406, -0.008],   // B4 ghost
 
-  /* Counter line — purple, medium, starts going left */
-  const crossD = [
-    `M 720 390`,
-    /* → left  */
-    `C 340 ${y(0.07)}, ${L} ${y(0.10)}, ${L} ${y(0.13)}`,
-    /* → right */
-    `C ${L} ${y(0.16)}, ${R} ${y(0.23)}, ${R} ${y(0.26)}`,
-    /* → left  */
-    `C ${R} ${y(0.29)}, ${L} ${y(0.36)}, ${L} ${y(0.39)}`,
-    /* → right */
-    `C ${L} ${y(0.42)}, ${R} ${y(0.49)}, ${R} ${y(0.52)}`,
-    /* → left  */
-    `C ${R} ${y(0.55)}, ${L} ${y(0.62)}, ${L} ${y(0.65)}`,
-    /* → right */
-    `C ${L} ${y(0.68)}, ${R} ${y(0.75)}, ${R} ${y(0.78)}`,
-    /* → centre finish */
-    `C ${R} ${y(0.81)}, 720 ${y(0.90)}, 720 ${y(0.93)}`,
-  ].join(' ')
-
-  /* Ghost echo of main — thinner, more transparent, slight offset */
-  const echoD = [
-    `M 720 410`,
-    `C 1080 ${y(0.075)}, ${R - 40} ${y(0.105)}, ${R - 40} ${y(0.135)}`,
-    `C ${R - 40} ${y(0.165)}, ${L + 40} ${y(0.235)}, ${L + 40} ${y(0.265)}`,
-    `C ${L + 40} ${y(0.295)}, ${R - 40} ${y(0.365)}, ${R - 40} ${y(0.395)}`,
-    `C ${R - 40} ${y(0.425)}, ${L + 40} ${y(0.495)}, ${L + 40} ${y(0.525)}`,
-    `C ${L + 40} ${y(0.555)}, ${R - 40} ${y(0.625)}, ${R - 40} ${y(0.655)}`,
-    `C ${R - 40} ${y(0.685)}, ${L + 40} ${y(0.755)}, ${L + 40} ${y(0.785)}`,
-    `C ${L + 40} ${y(0.815)}, 720 ${y(0.905)}, 720 ${y(0.935)}`,
-  ].join(' ')
+    // ── Purple bundle (left-first) ─────────────────────────────
+    [3.0, 0.70, C.purple, false, 28,  363,  0.005],   // P1 lead
+    [2.0, 0.45, C.purple, false, 62,  380,  0.015],   // P2
+    [1.4, 0.25, C.purple, false, 96,  397,  0.025],   // P3
+    [0.8, 0.14, C.purple, false, 18,  414, -0.004],   // P4 ghost
+  ]
 
   return (
     <svg
@@ -406,21 +384,28 @@ function LogoLinesLayer({ pageH }) {
     >
       <defs>
         <filter id="glow-strong" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+          <feGaussianBlur stdDeviation="7" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
         <filter id="glow-soft" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+          <feGaussianBlur stdDeviation="3" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
       </defs>
 
-      {/* Echo (drawn first, behind) */}
-      <path className="lp" d={echoD}  fill="none" stroke={C.blue}   strokeWidth={1}   strokeLinecap="round" opacity={0.25} filter="url(#glow-soft)" />
-      {/* Counter zigzag */}
-      <path className="lp" d={crossD} fill="none" stroke={C.purple} strokeWidth={2}   strokeLinecap="round" opacity={0.55} filter="url(#glow-strong)" />
-      {/* Main zigzag — drawn last, on top */}
-      <path className="lp" d={mainD}  fill="none" stroke={C.blue}   strokeWidth={2.5} strokeLinecap="round" opacity={0.85} filter="url(#glow-strong)" />
+      {LINES.map(([sw, op, color, goRight, margin, sy, dy], i) => (
+        <path
+          key={i}
+          className="lp"
+          d={mkZig(goRight, margin, sy, dy)}
+          fill="none"
+          stroke={color}
+          strokeWidth={sw}
+          strokeLinecap="round"
+          opacity={op}
+          filter={sw >= 2 ? 'url(#glow-strong)' : 'url(#glow-soft)'}
+        />
+      ))}
     </svg>
   )
 }
@@ -449,7 +434,7 @@ function HeroSection() {
       <motion.div style={{ y: wrapY, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 2 }} variants={stagger} initial="hidden" animate="visible">
         <motion.div style={{ scale: logoScale, opacity: logoOpacity }} variants={item}>
           <motion.img
-            src="/assets/shymen-logo.png" alt="Shymen Records"
+            src={`${import.meta.env.BASE_URL}assets/shymen-logo.png`} alt="Shymen Records"
             animate={{ rotate: [0, 1.2, -1.2, 0], y: [0, -10, 0] }}
             transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
             style={{ width: 'clamp(200px, 34vw, 400px)', height: 'auto', filter: `drop-shadow(0 0 50px ${C.blueGlow}) drop-shadow(0 0 100px rgba(53,82,252,0.18))` }}
