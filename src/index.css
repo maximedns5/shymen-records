@@ -1,0 +1,14 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  background: #04050a;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#root { width: 100%; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #04050a; }
+::-webkit-scrollbar-thumb { background: #3552FC; border-radius: 2px; }
