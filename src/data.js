@@ -228,13 +228,13 @@ export const DUOS = [
     id: 'd1',
     label: "K'rcher b2b Haled",
     members: ["K'rcher", "Haled"],
-    photoUrl: '',   // ← photo de duo partagée  ex: "assets/members/krcher-haled.jpg"
+    photoUrl: 'assets/members/krcher-haled.jpg',
   },
   {
     id: 'd2',
     label: "Jeff Pesos b2b Youpi",
     members: ["Jeff Pesos", "Youpi"],
-    photoUrl: '',   // ← photo de duo partagée  ex: "assets/members/jeffpesos-youpi.jpg"
+    photoUrl: 'assets/members/jeffpesos-youpi.jpg',
   },
 ]
 

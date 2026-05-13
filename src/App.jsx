@@ -146,9 +146,9 @@ function LogoLines({ pageH }) {
           ease: 'none',
           scrollTrigger: {
             trigger: 'body',
-            start: `${2 + i * 2}% top`,
+            start: `${1.5 + i * 0.8}% top`,
             end:   '90% top',
-            scrub: 2,
+            scrub: 1.8 + (i % 4) * 0.1,
           },
         })
       })
@@ -172,13 +172,21 @@ function LogoLines({ pageH }) {
   }
 
   /*
-   * ZÉRO feGaussianBlur — les filtres SVG par chemin tuaient les FPS.
-   * On compense avec des strokeWidth et opacités soigneusement choisis.
-   * Un seul CSS filter: drop-shadow sur le SVG entier = 1 seul pass GPU.
+   * 8 lignes, 4 par côté — ZÉRO feGaussianBlur (filtres SVG = FPS killer).
+   * Un seul CSS drop-shadow sur le SVG entier = 1 pass GPU pour tout.
+   * Opacités dégradées pour donner la profondeur sans filtre individuel.
    */
   const LINES = [
-    { d: mkZ(true,  22, 357, 0),      sw: 2.5, op: 0.80, color: C.blue   },
-    { d: mkZ(false, 28, 373, 0.008),  sw: 2.0, op: 0.55, color: C.purple },
+    // ── 4 lignes bleues (départ droite) ───────────────────────────────
+    { d: mkZ(true,  18, 353,  0.000), sw: 3.0, op: 0.85, color: C.blue   },
+    { d: mkZ(true,  48, 366,  0.010), sw: 2.0, op: 0.50, color: C.blue   },
+    { d: mkZ(true,  78, 379,  0.020), sw: 1.2, op: 0.28, color: C.blue   },
+    { d: mkZ(true,  12, 392, -0.008), sw: 0.7, op: 0.14, color: C.blue   },
+    // ── 4 lignes violettes (départ gauche) ────────────────────────────
+    { d: mkZ(false, 24, 360,  0.005), sw: 2.5, op: 0.70, color: C.purple },
+    { d: mkZ(false, 58, 373,  0.015), sw: 1.6, op: 0.40, color: C.purple },
+    { d: mkZ(false, 92, 386,  0.025), sw: 1.0, op: 0.22, color: C.purple },
+    { d: mkZ(false, 14, 399, -0.005), sw: 0.6, op: 0.12, color: C.purple },
   ]
 
   return (
