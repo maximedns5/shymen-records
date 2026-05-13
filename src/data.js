@@ -42,7 +42,7 @@ export const MEMBERS = [
     role: "DJ",
     soundcloudUrl: 'https://soundcloud.com/user-962284911',
     instagramUrl:  'https://www.instagram.com/romain_stephan18/',
-    photoUrl:   null   '',
+    photoUrl:      '',
   },
   {
     name: "K'rcher",
@@ -56,7 +56,7 @@ export const MEMBERS = [
     role: "DJ",
     soundcloudUrl: 'https://soundcloud.com/max-denis-317961011',
     instagramUrl:  'https://www.instagram.com/maximm_dnis/',
-    photoUrl:    null  '',
+    photoUrl:      '',
   },
   {
     name: "Padrino",
@@ -75,7 +75,7 @@ export const MEMBERS = [
   {
     name: "Choco",
     role: "DJ",
-    soundcloudUrl: null'',
+    soundcloudUrl: '',
     instagramUrl:  'https://www.instagram.com/antoine_tonio_/',
     photoUrl:      'assets/members/choco.jpg',
   },
