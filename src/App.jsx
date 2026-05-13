@@ -130,7 +130,7 @@ function DrawLine({ color=C.blue, width=130, glow, center=false }) {
   return <div ref={ref} style={{ height:2, width, background:color, borderRadius:2, boxShadow:glow?`0 0 12px ${glow}`:`0 0 10px ${C.blueGlow}`, marginBottom:'2.8rem', ...(center?{ margin:'0 auto 2.8rem auto' }:{}) }} />
 }
 
-/* ─── LOGO LINES — 2 chemins, ZERO filtre SVG, GPU-friendly ────────────────── */
+/* ─── LOGO LINES — 8 fils torsadés, 4 par côté ──────────────────────────────── */
 function LogoLines({ pageH }) {
   const svgRef = useRef(null)
 
@@ -146,9 +146,9 @@ function LogoLines({ pageH }) {
           ease: 'none',
           scrollTrigger: {
             trigger: 'body',
-            start: `${1.5 + i * 0.8}% top`,
+            start: `${1.2 + i * 0.6}% top`,
             end:   '90% top',
-            scrub: 1.8 + (i % 4) * 0.1,
+            scrub: 1.8 + (i % 4) * 0.08,
           },
         })
       })
@@ -159,51 +159,86 @@ function LogoLines({ pageH }) {
   if (pageH === 0) return null
   const W = 1440, H = pageH
 
-  const mkZ = (right, margin, sy, dy = 0) => {
+  /*
+   * mkBraid — génère un fil qui suit le zigzag ET tourne autour du chemin central.
+   *
+   * right      : direction du premier virage
+   * margin     : distance du bord pour les virages
+   * startY     : Y de départ (près du logo)
+   * phase      : décalage angulaire (rad) — différent pour chaque fil du même groupe
+   * braidR     : rayon de la torsade en pixels SVG (~50px dans un repère 1440px)
+   * twists     : nombre de rotations complètes sur toute la hauteur de la page
+   */
+  const mkBraid = (right, margin, startY, phase, braidR = 52, twists = 3) => {
     const L = margin, R = W - margin
-    const anc = [0.13,0.26,0.39,0.52,0.65,0.78,0.92].map(p => H*(p+dy))
-    const xs  = right ? [R,L,R,L,R,L,R] : [L,R,L,R,L,R,L]
-    let d = `M 720 ${sy}`
-    anc.forEach((y,i) => {
-      const px=i===0?720:xs[i-1], py=i===0?sy:anc[i-1], x=xs[i], mid=(py+y)/2
-      d += ` C ${px} ${mid} ${x} ${mid} ${x} ${y}`
-    })
+    const anchors = [0.13, 0.26, 0.39, 0.52, 0.65, 0.78, 0.92].map(p => H * p)
+    const mainXs  = right ? [R,L,R,L,R,L,R] : [L,R,L,R,L,R,L]
+    const totalY  = anchors[anchors.length - 1] - startY
+    const SUB     = 8   // sous-points par jambe pour une courbe lisse
+
+    // Accumule les points (x, y) en appliquant l'offset de torsade en x
+    const pts = [[720 + braidR * Math.cos(phase), startY]]
+
+    for (let leg = 0; leg < anchors.length; leg++) {
+      const prevX = leg === 0 ? 720      : mainXs[leg - 1]
+      const prevY = leg === 0 ? startY   : anchors[leg - 1]
+      const nextX = mainXs[leg]
+      const nextY = anchors[leg]
+
+      for (let s = 1; s <= SUB; s++) {
+        const t   = s / SUB
+        const x   = prevX + (nextX - prevX) * t
+        const y   = prevY + (nextY - prevY) * t
+        const prg = (y - startY) / totalY            // 0 → 1 sur toute la page
+        const ang = phase + prg * twists * Math.PI * 2
+        pts.push([x + braidR * Math.cos(ang), y])
+      }
+    }
+
+    // Spline quadratique lisse : on passe par les mid-points
+    let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`
+    for (let i = 1; i < pts.length - 1; i++) {
+      const mx = ((pts[i][0] + pts[i+1][0]) / 2).toFixed(1)
+      const my = ((pts[i][1] + pts[i+1][1]) / 2).toFixed(1)
+      d += ` Q ${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)} ${mx},${my}`
+    }
+    const last = pts[pts.length - 1]
+    d += ` L ${last[0].toFixed(1)} ${last[1].toFixed(1)}`
     return d
   }
 
+  const PI = Math.PI
   /*
-   * 8 lignes, 4 par côté — ZÉRO feGaussianBlur (filtres SVG = FPS killer).
-   * Un seul CSS drop-shadow sur le SVG entier = 1 pass GPU pour tout.
-   * Opacités dégradées pour donner la profondeur sans filtre individuel.
+   * Groupe bleu  : 4 fils qui torsadent autour du zigzag droite-premier
+   * Groupe violet: 4 fils qui torsadent autour du zigzag gauche-premier
+   * Phases espacées de π/2 (90°) → croisements tous les demi-tours
    */
   const LINES = [
-    // ── 4 lignes bleues (départ droite) ───────────────────────────────
-    { d: mkZ(true,  18, 353,  0.000), sw: 3.0, op: 0.85, color: C.blue   },
-    { d: mkZ(true,  48, 366,  0.010), sw: 2.0, op: 0.50, color: C.blue   },
-    { d: mkZ(true,  78, 379,  0.020), sw: 1.2, op: 0.28, color: C.blue   },
-    { d: mkZ(true,  12, 392, -0.008), sw: 0.7, op: 0.14, color: C.blue   },
-    // ── 4 lignes violettes (départ gauche) ────────────────────────────
-    { d: mkZ(false, 24, 360,  0.005), sw: 2.5, op: 0.70, color: C.purple },
-    { d: mkZ(false, 58, 373,  0.015), sw: 1.6, op: 0.40, color: C.purple },
-    { d: mkZ(false, 92, 386,  0.025), sw: 1.0, op: 0.22, color: C.purple },
-    { d: mkZ(false, 14, 399, -0.005), sw: 0.6, op: 0.12, color: C.purple },
+    // ── Groupe bleu (zigzag droite) ────────────────────────────────────
+    { d: mkBraid(true,  20, 355, 0          ), sw:4, op:0.88, color:C.blue   },
+    { d: mkBraid(true,  20, 355, PI*0.5     ), sw:3, op:0.58, color:C.blue   },
+    { d: mkBraid(true,  20, 355, PI         ), sw:2, op:0.32, color:C.blue   },
+    { d: mkBraid(true,  20, 355, PI*1.5     ), sw:1, op:0.16, color:C.blue   },
+    // ── Groupe violet (zigzag gauche) ──────────────────────────────────
+    { d: mkBraid(false, 26, 368, PI*0.25    ), sw:4, op:0.75, color:C.purple },
+    { d: mkBraid(false, 26, 368, PI*0.75    ), sw:3, op:0.48, color:C.purple },
+    { d: mkBraid(false, 26, 368, PI*1.25    ), sw:2, op:0.26, color:C.purple },
+    { d: mkBraid(false, 26, 368, PI*1.75    ), sw:1, op:0.13, color:C.purple },
   ]
 
   return (
     <svg ref={svgRef} aria-hidden="true"
       style={{
-        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-        pointerEvents: 'none', zIndex: 1, overflow: 'visible',
-        /* drop-shadow CSS = 1 seul pass GPU, pas de feGaussianBlur par chemin */
-        filter: 'drop-shadow(0 0 6px rgba(53,82,252,0.5))',
-        transform: 'translateZ(0)',   /* force GPU layer */
-        willChange: 'filter',
+        position:'absolute', top:0, left:0, width:'100%', height:'100%',
+        pointerEvents:'none', zIndex:1, overflow:'visible',
+        filter:'drop-shadow(0 0 7px rgba(53,82,252,0.55))',
+        transform:'translateZ(0)',
       }}
       viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
     >
-      {LINES.map((l,i) => (
-        <path key={i} className="lp" d={l.d} fill="none"
-          stroke={l.color} strokeWidth={l.sw} strokeLinecap="round" opacity={l.op}/>
+      {LINES.map(({ d, sw, op, color }, i) => (
+        <path key={i} className="lp" d={d} fill="none"
+          stroke={color} strokeWidth={sw} strokeLinecap="round" opacity={op}/>
       ))}
     </svg>
   )
