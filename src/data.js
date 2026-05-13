@@ -21,77 +21,77 @@ export const MEMBERS = [
     role: "DJ",
     soundcloudUrl: '',          // ← ex: "https://soundcloud.com/fleche"
     instagramUrl:  '',
-    photoUrl:      '',          // ← ex: "assets/members/fleche.jpg"
+    photoUrl:      'assets/members/fleche.jpg',          // ← ex: "assets/members/fleche.jpg"
   },
   {
     name: "K'gnard",
     role: "DJ & Producer",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/kgnard.jpg',
   },
   {
     name: "Jeff Pesos",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/jeffpesos.jpg',
   },
   {
     name: "Youpi",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/youpi.jpg',
   },
   {
     name: "K'rcher",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/krcher.jpg',
   },
   {
     name: "Haled",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/haled.jpg',
   },
   {
     name: "Padrino",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/padrino.jpg',
   },
   {
     name: "Jee",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/jee.jpg',
   },
   {
     name: "Choco",
     role: "DJ",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/choco.jpg',
   },
   {
     name: "BouBou",
     role: "Producer",
     soundcloudUrl: '',
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/boubou.jpg',
   },
   {
     name: "Capu",
     role: "Comms",
     soundcloudUrl: null,        // null = pas de SoundCloud → bouton "Contact" à la place
     instagramUrl:  '',
-    photoUrl:      '',
+    photoUrl:      'assets/members/capu.jpg',
     contactEmail:  '',          // ← email direct pour Capu si différent du booking général
   },
 ]
