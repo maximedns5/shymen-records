@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, createContext, useContext } from 'react'
-import { HashRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { HashRouter, Routes, Route, Link } from 'react-router-dom'
+import { motion, useInView } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
@@ -130,7 +130,7 @@ function DrawLine({ color=C.blue, width=130, glow, center=false }) {
   return <div ref={ref} style={{ height:2, width, background:color, borderRadius:2, boxShadow:glow?`0 0 12px ${glow}`:`0 0 10px ${C.blueGlow}`, marginBottom:'2.8rem', ...(center?{ margin:'0 auto 2.8rem auto' }:{}) }} />
 }
 
-/* ─── LOGO LINES — 4 paths, optimisé perf ───────────────────────────────────── */
+/* ─── LOGO LINES — 2 chemins, ZERO filtre SVG, GPU-friendly ────────────────── */
 function LogoLines({ pageH }) {
   const svgRef = useRef(null)
 
@@ -141,15 +141,14 @@ function LogoLines({ pageH }) {
       paths.forEach((path, i) => {
         const len = path.getTotalLength()
         gsap.set(path, { strokeDasharray: len, strokeDashoffset: len })
-        // gsap.to avec attr est plus efficace qu'onUpdate + gsap.set
         gsap.to(path, {
           strokeDashoffset: 0,
           ease: 'none',
           scrollTrigger: {
             trigger: 'body',
-            start: `${2 + i * 1.5}% top`,
+            start: `${2 + i * 2}% top`,
             end:   '90% top',
-            scrub: 1.8 + i * 0.1,
+            scrub: 2,
           },
         })
       })
@@ -172,34 +171,31 @@ function LogoLines({ pageH }) {
     return d
   }
 
-  // 4 lignes au lieu de 8 — même impact visuel, 2× moins de ScrollTriggers
+  /*
+   * ZÉRO feGaussianBlur — les filtres SVG par chemin tuaient les FPS.
+   * On compense avec des strokeWidth et opacités soigneusement choisis.
+   * Un seul CSS filter: drop-shadow sur le SVG entier = 1 seul pass GPU.
+   */
   const LINES = [
-    { d: mkZ(true,  24, 355,  0.000), sw:3,   op:0.88, color:C.blue,   filter:'url(#gs)' },
-    { d: mkZ(false, 30, 370,  0.006), sw:2.5, op:0.65, color:C.purple, filter:'url(#gs)' },
-    { d: mkZ(true,  70, 388,  0.015), sw:1.5, op:0.30, color:C.blue,   filter:'url(#gw)' },
-    { d: mkZ(false, 75, 405, -0.006), sw:1,   op:0.18, color:C.purple, filter:'url(#gw)' },
+    { d: mkZ(true,  22, 357, 0),      sw: 2.5, op: 0.80, color: C.blue   },
+    { d: mkZ(false, 28, 373, 0.008),  sw: 2.0, op: 0.55, color: C.purple },
   ]
 
   return (
     <svg ref={svgRef} aria-hidden="true"
-      style={{ position:'absolute', top:0, left:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:1, overflow:'visible', willChange:'transform' }}
+      style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+        pointerEvents: 'none', zIndex: 1, overflow: 'visible',
+        /* drop-shadow CSS = 1 seul pass GPU, pas de feGaussianBlur par chemin */
+        filter: 'drop-shadow(0 0 6px rgba(53,82,252,0.5))',
+        transform: 'translateZ(0)',   /* force GPU layer */
+        willChange: 'filter',
+      }}
       viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
     >
-      <defs>
-        {/* Filtre fort — seulement sur les 2 lignes principales */}
-        <filter id="gs" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="5" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        {/* Filtre léger — lignes ghost */}
-        <filter id="gw" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
       {LINES.map((l,i) => (
-        <path key={i} className="lp" d={l.d} fill="none" stroke={l.color}
-          strokeWidth={l.sw} strokeLinecap="round" opacity={l.op} filter={l.filter}/>
+        <path key={i} className="lp" d={l.d} fill="none"
+          stroke={l.color} strokeWidth={l.sw} strokeLinecap="round" opacity={l.op}/>
       ))}
     </svg>
   )
@@ -208,13 +204,29 @@ function LogoLines({ pageH }) {
 /* ─── HERO ──────────────────────────────────────────────────────────────────── */
 function Hero() {
   const { t } = useLang()
-  const { scrollY } = useScroll()
-  const logoScale   = useTransform(scrollY, [0,500], [1,0.65])
-  const logoOpacity = useTransform(scrollY, [0,450], [1,0])
-  const wrapY       = useTransform(scrollY, [0,500], [0,-70])
-  const glowRef = useRef(null)
+  const wrapRef  = useRef(null)
+  const logoRef  = useRef(null)
+  const glowRef  = useRef(null)
+
   useEffect(() => {
-    if (glowRef.current) gsap.to(glowRef.current, { scale:1.2, opacity:0.7, duration:3, ease:'sine.inOut', yoyo:true, repeat:-1 })
+    /* Glow pulse — simple GSAP repeat, pas de scroll */
+    gsap.to(glowRef.current, { scale:1.18, opacity:0.65, duration:3, ease:'sine.inOut', yoyo:true, repeat:-1 })
+
+    /* Logo flottement — GSAP, pas de Framer Motion scroll */
+    gsap.to(logoRef.current, { y:-10, rotation:1.2, duration:3.5, ease:'sine.inOut', yoyo:true, repeat:-1 })
+
+    /* Parallax hero au scroll — GSAP ScrollTrigger, pas de useTransform */
+    const ctx = gsap.context(() => {
+      gsap.to(wrapRef.current, {
+        y: -60, ease:'none',
+        scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:1 },
+      })
+      gsap.to(logoRef.current, {
+        scale: 0.65, opacity: 0, ease:'none',
+        scrollTrigger: { trigger:'#hero', start:'top top', end:'40% top', scrub:1 },
+      })
+    })
+    return () => ctx.revert()
   }, [])
 
   const stg = { hidden:{}, visible:{ transition:{ staggerChildren:0.13 } } }
@@ -222,12 +234,11 @@ function Hero() {
 
   return (
     <section id="hero" style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', position:'relative', padding:'0 2rem', overflow:'hidden', background:C.bg0 }}>
-      <div ref={glowRef} style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:680, height:680, borderRadius:'50%', background:`radial-gradient(circle, ${C.blueGlow} 0%, transparent 68%)`, opacity:0.3, pointerEvents:'none' }}/>
-      <motion.div style={{ y:wrapY, display:'flex', flexDirection:'column', alignItems:'center', gap:'1.8rem', position:'relative', zIndex:2 }} variants={stg} initial="hidden" animate="visible">
-        <motion.div style={{ scale:logoScale, opacity:logoOpacity }} variants={itm}>
-          <motion.img src={shymenLogo} alt="Shymen Records"
-            animate={{ rotate:[0,1.2,-1.2,0], y:[0,-10,0] }} transition={{ duration:7, ease:'easeInOut', repeat:Infinity }}
-            style={{ width:'clamp(180px,30vw,360px)', height:'auto', borderRadius:20, filter:`drop-shadow(0 0 40px ${C.blueGlow})` }}/>
+      <div ref={glowRef} style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:640, height:640, borderRadius:'50%', background:`radial-gradient(circle, ${C.blueGlow} 0%, transparent 68%)`, opacity:0.28, pointerEvents:'none' }}/>
+      <motion.div ref={wrapRef} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'1.8rem', position:'relative', zIndex:2 }} variants={stg} initial="hidden" animate="visible">
+        <motion.div variants={itm}>
+          <img ref={logoRef} src={shymenLogo} alt="Shymen Records"
+            style={{ width:'clamp(180px,30vw,360px)', height:'auto', borderRadius:20, display:'block', filter:`drop-shadow(0 0 30px ${C.blueGlow})` }}/>
         </motion.div>
         <motion.h1 variants={itm} style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:'clamp(2.4rem,7vw,6rem)', fontWeight:800, color:'#fff', margin:0, letterSpacing:'-0.03em', lineHeight:1, textTransform:'uppercase', textAlign:'center' }}>
           Shymen Records
@@ -287,17 +298,8 @@ function EventCard({ event }) {
 function ArchivePreview() {
   const { t } = useLang()
   const gridRef = useRef(null)
-  useEffect(() => {
-    if (!gridRef.current) return
-    const ctx = gsap.context(() => {
-      gridRef.current.querySelectorAll('.gi').forEach((el,i) => {
-        const d = i%2===0?-20:20; gsap.set(el,{y:d})
-        ScrollTrigger.create({ trigger:el, start:'top bottom', end:'bottom top', scrub:1.5,
-          onUpdate: s => gsap.set(el,{y:d*(1-2*s.progress)}) })
-      })
-    }, gridRef)
-    return () => ctx.revert()
-  },[])
+  // Parallax supprimé — trop coûteux sur mobile/low-end GPU
+  useEffect(() => {}, [])
 
   return (
     <section id="archive" style={{ padding:'clamp(5rem,9vw,8rem) clamp(1.5rem,7vw,7rem)', position:'relative', background:C.bg2 }}>
