@@ -226,15 +226,15 @@ export const PAST_EVENTS = [
 export const DUOS = [
   {
     id: 'd1',
-    label: "Flèche b2b K'gnard",
-    members: ["Flèche", "K'gnard"],
-    photoUrl: '',   // ← photo de duo partagée
+    label: "K'rcher b2b Haled",
+    members: ["K'rcher", "Haled"],
+    photoUrl: '',   // ← photo de duo partagée  ex: "assets/members/krcher-haled.jpg"
   },
   {
     id: 'd2',
-    label: "Jee b2b Choco",
-    members: ["Jee", "Choco"],
-    photoUrl: '',   // ← photo de duo partagée
+    label: "Jeff Pesos b2b Youpi",
+    members: ["Jeff Pesos", "Youpi"],
+    photoUrl: '',   // ← photo de duo partagée  ex: "assets/members/jeffpesos-youpi.jpg"
   },
 ]
 
