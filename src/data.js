@@ -217,6 +217,27 @@ export const PAST_EVENTS = [
   { id: 9, name: "NEON CATHEDRAL",    date: "Sep 2023", photoUrl: '' },
 ]
 
+// ─── DUOS ─────────────────────────────────────────────────────────────────────
+// Les duos ont une photo partagée et s'affichent ensemble sur la page membres.
+// members : noms EXACTEMENT comme dans le tableau MEMBERS ci-dessus
+// photoUrl : photo de groupe dans  public/assets/members/
+//   ex: "assets/members/fleche-kgnard.jpg"
+// Sur la page membres, le duo prend toute la largeur avec photo à gauche/droite.
+export const DUOS = [
+  {
+    id: 'd1',
+    label: "Flèche b2b K'gnard",
+    members: ["Flèche", "K'gnard"],
+    photoUrl: '',   // ← photo de duo partagée
+  },
+  {
+    id: 'd2',
+    label: "Jee b2b Choco",
+    members: ["Jee", "Choco"],
+    photoUrl: '',   // ← photo de duo partagée
+  },
+]
+
 // ─── RÉSEAUX SOCIAUX ──────────────────────────────────────────────────────────
 export const SOCIALS = {
   instagram:      '',   // ← ex: "https://instagram.com/shymenrecords"
