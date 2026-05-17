@@ -140,81 +140,97 @@ export const EVENTS = [
 ]
 
 // ─── RELEASES ────────────────────────────────────────────────────────────────
-// soundcloudUrl → lien direct vers le track/EP sur SoundCloud
-//   ex: "https://soundcloud.com/shymenrecords/flux-absolu"
-// coverImage    → pochette dans  public/assets/releases/
-//   ex: "assets/releases/flux-absolu.jpg"
+//
+// ▶ POCHETTES : mets les images dans  public/assets/releases/
+//   puis renseigne le chemin dans coverImage, ex: "assets/releases/release-1.jpg"
+//   Format recommandé : carré, 800×800px minimum, JPG ou PNG
+//
+// ▶ SOUNDCLOUD : lien direct vers le track/EP
+//   ex: "https://soundcloud.com/shymenrecords/nom-du-track"
+//
 export const RELEASES = [
   {
     id: 1,
-    title: "Flux Absolu",
-    artist: "K'gnard",
-    year: "2026",
-    bpm: "148 BPM",
-    soundcloudUrl: '',          // ← lien SoundCloud du track
-    coverImage:    '',          // ← ex: "assets/releases/flux-absolu.jpg"
+    title: "",          // ← nom du track/EP
+    artist: "",         // ← artiste(s)
+    year: "",           // ← année de sortie, ex: "2025"
+    bpm: "",            // ← ex: "148 BPM"  (laisser vide pour masquer)
+    soundcloudUrl: '',  // ← lien SoundCloud
+    coverImage:    '',  // ← "assets/releases/release-1.jpg"
   },
   {
     id: 2,
-    title: "Pressure Drop",
-    artist: "BouBou",
-    year: "2025",
-    bpm: "145 BPM",
+    title: "",
+    artist: "",
+    year: "",
+    bpm: "",
     soundcloudUrl: '',
-    coverImage:    '',
+    coverImage:    '',  // ← "assets/releases/release-2.jpg"
   },
   {
     id: 3,
-    title: "Maldito Groove",
-    artist: "Flèche",
-    year: "2025",
-    bpm: "152 BPM",
+    title: "",
+    artist: "",
+    year: "",
+    bpm: "",
     soundcloudUrl: '',
-    coverImage:    '',
+    coverImage:    '',  // ← "assets/releases/release-3.jpg"
   },
   {
     id: 4,
-    title: "Overdrive EP",
-    artist: "K'gnard & BouBou",
-    year: "2025",
-    bpm: "150 BPM",
+    title: "",
+    artist: "",
+    year: "",
+    bpm: "",
     soundcloudUrl: '',
-    coverImage:    '',
-  },
-  {
-    id: 5,
-    title: "Acid Rain Vol. 2",
-    artist: "Jeff Pesos",
-    year: "2024",
-    bpm: "147 BPM",
-    soundcloudUrl: '',
-    coverImage:    '',
-  },
-  {
-    id: 6,
-    title: "Circuit Breaker",
-    artist: "Padrino",
-    year: "2024",
-    bpm: "144 BPM",
-    soundcloudUrl: '',
-    coverImage:    '',
+    coverImage:    '',  // ← "assets/releases/release-4.jpg"
   },
 ]
 
 // ─── ARCHIVE — SOIRÉES PASSÉES ────────────────────────────────────────────────
-// photoUrl → photo de la soirée dans  public/assets/archive/
-//   ex: "assets/archive/midnight-surge.jpg"
-//   → mets autant de photos que tu veux, ajoute des entrées dans le tableau
+//
+// Structure : chaque événement a un tableau "photos" avec jusqu'à N photos.
+//
+// ▶ OÙ METTRE LES PHOTOS :
+//
+//   Pour "La Java" → public/assets/archive/la-java/
+//     photo-1.jpg, photo-2.jpg, photo-3.jpg, photo-4.jpg, photo-5.jpg
+//
+//   Pour "No Scrum No Win" → public/assets/archive/no-scrum-no-win/
+//     photo-1.jpg, photo-2.jpg, photo-3.jpg, photo-4.jpg, photo-5.jpg
+//
+//   Format recommandé : paysage 16/9 ou carré, JPG, 1200px min de large
+//
+// ▶ NOMMAGE : peu importe le nom du fichier, tant que tu l'écris
+//   exactement pareil dans le champ "photos" ci-dessous.
+//
+// ▶ AJOUTER UN NOUVEL EVENT : copie/colle un bloc et incrémente l'id.
+//
 export const PAST_EVENTS = [
-  { id: 1, name: "MIDNIGHT SURGE",    date: "Dec 2024", photoUrl: '' },
-  { id: 2, name: "HARD BOUNCE VOL.3", date: "Oct 2024", photoUrl: '' },
-  { id: 3, name: "TRANCE ODYSSEY",    date: "Aug 2024", photoUrl: '' },
-  { id: 4, name: "UNDERGROUND RAVE",  date: "Jun 2024", photoUrl: '' },
-  { id: 5, name: "ACID NIGHTS",       date: "Apr 2024", photoUrl: '' },
-  { id: 6, name: "ELECTRIC CHURCH",   date: "Feb 2024", photoUrl: '' },
-  { id: 7, name: "BOUNCE FACTORY",    date: "Jan 2024", photoUrl: '' },
-  { id: 8, name: "HYPERDRIVE",        date: "Nov 2023", photoUrl: '' },
-  { id: 9, name: "NEON CATHEDRAL",    date: "Sep 2023", photoUrl: '' },
+  {
+    id: 1,
+    name: "La Java",
+    date: "",           // ← ex: "Mar 2025"
+    photos: [
+      'assets/archive/la-java/photo-1.jpg',   // ← mets le fichier ici
+      'assets/archive/la-java/photo-2.jpg',
+      'assets/archive/la-java/photo-3.jpg',
+      'assets/archive/la-java/photo-4.jpg',
+      'assets/archive/la-java/photo-5.jpg',
+    ],
+  },
+  {
+    id: 2,
+    name: "No Scrum No Win",
+    date: "",           // ← ex: "Jan 2025"
+    photos: [
+      'assets/archive/no-scrum-no-win/photo-1.jpg',
+      'assets/archive/no-scrum-no-win/photo-2.jpg',
+      'assets/archive/no-scrum-no-win/photo-3.jpg',
+      'assets/archive/no-scrum-no-win/photo-4.jpg',
+      'assets/archive/no-scrum-no-win/photo-5.jpg',
+    ],
+  },
 ]
 
 // ─── DUOS ─────────────────────────────────────────────────────────────────────

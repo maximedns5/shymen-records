@@ -347,14 +347,21 @@ function ArchivePreview() {
   return (
     <section id="archive" style={{ padding:'clamp(5rem,9vw,8rem) clamp(1.5rem,7vw,7rem)', position:'relative', background:C.bg2 }}>
       <FadeUp><SecLabel text={t('arc_label')}/><SecTitle text={t('arc_title')}/><DrawLine color={`linear-gradient(to right, ${C.purple}, ${C.blue})`} glow={C.purpleDim}/></FadeUp>
+      {/* Preview : première photo de chaque event, mosaïque */}
       <div ref={gridRef} style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'0.9rem', marginBottom:'2.5rem' }}>
-        {PAST_EVENTS.slice(0,6).map((ev,i) => (
-          <FadeUp key={ev.id} delay={i*0.07}>
-            <motion.div className="gi" style={{ gridColumn:i===0||i===3?'span 2':'span 1', borderRadius:22, overflow:'hidden', position:'relative', aspectRatio:i===0||i===3?'16/7':'1/1', background:ev.photoUrl?`url(${asset(ev.photoUrl)}) center/cover`:`linear-gradient(135deg, rgba(53,82,252,0.12),rgba(139,92,246,0.08))`, border:'1px solid rgba(255,255,255,0.05)' }}>
-              <div style={{ position:'absolute', bottom:12, left:14 }}><p style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:'0.72rem', color:'rgba(255,255,255,0.42)', margin:0 }}>{ev.name} · {ev.date}</p></div>
-            </motion.div>
-          </FadeUp>
-        ))}
+        {PAST_EVENTS.flatMap(ev => ev.photos || []).slice(0,6).map((photoPath, i) => {
+          const ev = PAST_EVENTS.find(e => (e.photos||[]).includes(photoPath))
+          const large = i===0||i===3
+          const hasPh = !!photoPath
+          return (
+            <FadeUp key={photoPath+i} delay={i*0.07}>
+              <motion.div className="gi" style={{ gridColumn:large?'span 2':'span 1', borderRadius:22, overflow:'hidden', position:'relative', aspectRatio:large?'16/7':'1/1', background:`linear-gradient(135deg,rgba(53,82,252,0.12),rgba(139,92,246,0.08))`, border:'1px solid rgba(255,255,255,0.05)' }}>
+                {hasPh && <img src={asset(photoPath)} alt={ev?.name||''} style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover' }}/>}
+                <div style={{ position:'absolute', bottom:12, left:14 }}><p style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:'0.72rem', color:'rgba(255,255,255,0.55)', margin:0 }}>{ev?.name} · {ev?.date}</p></div>
+              </motion.div>
+            </FadeUp>
+          )
+        })}
       </div>
       <FadeUp style={{ display:'flex', justifyContent:'center' }}>
         <Link to="/archive" style={{ textDecoration:'none' }}><Btn filled>{t('arc_cta')}</Btn></Link>
@@ -637,33 +644,42 @@ function ArchivePage() {
         <h1 style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:'clamp(2.5rem,6vw,5rem)', fontWeight:800, color:'#fff', margin:'0 0 1rem 0', letterSpacing:'-0.03em' }}>{t('arc_title')}</h1>
         <div style={{ height:2, width:100, background:`linear-gradient(to right, ${C.purple},${C.blue})`, borderRadius:2, boxShadow:`0 0 12px ${C.blueGlow}`, marginBottom:'3rem' }}/>
       </motion.div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:'1rem' }}>
-        {PAST_EVENTS.map((ev,i) => (
-          <motion.div key={ev.id} initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.6, delay:i*0.05, ease:[0.16,1,0.3,1] }}>
-            <ArchiveCard event={ev}/>
+      {/* Grille par event : titre de l'event + toutes ses photos */}
+      {PAST_EVENTS.map((ev, evIdx) => (
+        <div key={ev.id} style={{ marginBottom:'3.5rem' }}>
+          <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.5, delay:evIdx*0.08 }}>
+            <h2 style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:'clamp(1.4rem,3vw,2.2rem)', fontWeight:800, color:'#fff', margin:'0 0 0.4rem 0', letterSpacing:'-0.02em' }}>{ev.name}</h2>
+            {ev.date && <p style={{ color:C.muted, fontSize:'0.8rem', fontFamily:'Inter,sans-serif', margin:'0 0 1.4rem 0' }}>{ev.date}</p>}
           </motion.div>
-        ))}
-      </div>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))', gap:'0.8rem' }}>
+            {(ev.photos||[]).map((photoPath, pi) => (
+              <motion.div key={photoPath+pi} initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.5, delay:evIdx*0.08 + pi*0.05 }}>
+                <ArchiveCard photoPath={photoPath} eventName={ev.name}/>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
 
-function ArchiveCard({ event }) {
+function ArchiveCard({ photoPath, eventName }) {
   const [hov, setHov] = useState(false)
+  const hasPhoto = !!photoPath
   return (
     <motion.div onHoverStart={()=>setHov(true)} onHoverEnd={()=>setHov(false)}
-      whileHover={{ scale:1.02, boxShadow:`0 20px 50px rgba(53,82,252,0.2)` }}
-      style={{ borderRadius:20, overflow:'hidden', position:'relative', aspectRatio:'4/3', background:`linear-gradient(135deg,rgba(53,82,252,0.15),rgba(139,92,246,0.08))`, border:'1px solid rgba(255,255,255,0.06)' }}>
-      {event.photoUrl && <img src={asset(event.photoUrl)} alt={event.name} style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover' }}/>}
-      {!event.photoUrl && <div style={{ position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:0.1 }}><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>}
-      <motion.div animate={{ opacity:hov?1:0 }} transition={{ duration:0.25 }} style={{ position:'absolute',inset:0,background:'rgba(4,5,10,0.78)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:10 }}>
-        <p style={{ fontFamily:'"Space Grotesk",sans-serif',fontSize:'1.1rem',fontWeight:800,color:'#fff',margin:0,textAlign:'center',padding:'0 1rem' }}>{event.name}</p>
-        <Pill>{event.date}</Pill>
+      whileHover={{ scale:1.02, boxShadow:`0 16px 40px rgba(53,82,252,0.18)` }}
+      style={{ borderRadius:18, overflow:'hidden', position:'relative', aspectRatio:'4/3', background:`linear-gradient(135deg,rgba(53,82,252,0.12),rgba(139,92,246,0.08))`, border:'1px solid rgba(255,255,255,0.06)' }}>
+      {hasPhoto
+        ? <img src={asset(photoPath)} alt={eventName} style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover' }}/>
+        : <div style={{ position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:0.12 }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          </div>}
+      <motion.div animate={{ opacity:hov?1:0 }} transition={{ duration:0.22 }}
+        style={{ position:'absolute',inset:0,background:'rgba(4,5,10,0.65)',display:'flex',alignItems:'center',justifyContent:'center' }}>
+        <p style={{ fontFamily:'"Space Grotesk",sans-serif',fontSize:'0.9rem',fontWeight:700,color:'#fff',margin:0,textAlign:'center',padding:'0 1rem' }}>{eventName}</p>
       </motion.div>
-      <div style={{ position:'absolute',bottom:0,left:0,right:0,padding:'1.5rem 1rem 0.8rem',background:'linear-gradient(to top,rgba(4,5,10,0.9),transparent)' }}>
-        <p style={{ fontFamily:'"Space Grotesk",sans-serif',fontSize:'0.85rem',fontWeight:700,color:'#fff',margin:0 }}>{event.name}</p>
-        <p style={{ fontFamily:'Inter,sans-serif',fontSize:'0.72rem',color:C.muted,margin:'2px 0 0 0' }}>{event.date}</p>
-      </div>
     </motion.div>
   )
 }
