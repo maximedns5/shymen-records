@@ -7,7 +7,7 @@
 // ─── CONTACT ─────────────────────────────────────────────────────────────────
 // Adresse email de booking (apparaît dans la section contact + bouton en haut)
 export const CONTACT = {
-  email: 'booking@shymenrecords.com',
+  email: 'records.shymen@gmail.com',
   city:  'Paris, France',
 }
 
@@ -198,10 +198,10 @@ export const PAST_EVENTS = [
     name: "No Scrum No Win",
     date: "",           // ← ex: "Jan 2025"
     photos: [
-      'assets/archive/no-scrum-no-win/photo-1.jpg',
-      'assets/archive/no-scrum-no-win/photo-2.jpeg',
-      'assets/archive/no-scrum-no-win/photo-3.jpeg',
-      'assets/archive/no-scrum-no-win/photo-4.jpg',
+      'assets/archive/no-scrum/photo-1.jpg',
+      'assets/archive/no-scrum/photo-2.jpeg',
+      'assets/archive/no-scrum/photo-3.jpeg',
+      'assets/archive/no-scrum/photo-4.jpg',
     ],
   },
 ]
