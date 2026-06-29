@@ -103,39 +103,15 @@ export const MEMBERS = [
 export const EVENTS = [
   {
     id: 1,
-    date: "SAT · 24 MAY 2026",
-    name: "INFINITE VOLTAGE",
+    date: "SAM · 18 JUILLET 2026",
+    name: "PANIC ROOM",
     venue: "Warehouse 23",
     city: "Paris",
     lineup: ["Flèche b2b K'gnard", "Jeff Pesos", "BouBou"],
     tags: ["All night", "Indoor"],
-    ticketUrl: '',              // ← ex: "https://shotgun.live/events/infinite-voltage"
-    infoUrl:   '',              // ← ex: "https://facebook.com/events/123456"
-    flyer:     '',              // ← ex: "assets/events/infinite-voltage.jpg"
-  },
-  {
-    id: 2,
-    date: "FRI · 13 JUN 2026",
-    name: "ACID FREQUENCIES",
-    venue: "Le Bataclan",
-    city: "Paris",
-    lineup: ["Youpi", "K'rcher b2b Haled", "Padrino"],
-    tags: ["All night", "Techno"],
-    ticketUrl: '',
-    infoUrl:   '',
-    flyer:     '',
-  },
-  {
-    id: 3,
-    date: "SAT · 5 JUL 2026",
-    name: "SUMMER RAVE OPEN AIR",
-    venue: "Bois de Vincennes",
-    city: "Paris",
-    lineup: ["Flèche", "Jee · Choco", "K'gnard b2b BouBou"],
-    tags: ["Open air", "Hard House"],
-    ticketUrl: '',
-    infoUrl:   '',
-    flyer:     '',
+    ticketUrl: 'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://shotgun.live/events/infinite-voltage"
+    infoUrl:   'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://facebook.com/events/123456"
+    flyer:     'assets/events/panic-room-flyer.jpeg',              // ← ex: "assets/events/infinite-voltage.jpg"
   },
 ]
 
@@ -151,39 +127,39 @@ export const EVENTS = [
 export const RELEASES = [
   {
     id: 1,
-    title: "",          // ← nom du track/EP
-    artist: "",         // ← artiste(s)
-    year: "",           // ← année de sortie, ex: "2025"
+    title: "Pacman",          // ← nom du track/EP
+    artist: "BouBou",         // ← artiste(s)
+    year: "2026",           // ← année de sortie, ex: "2025"
     bpm: "",            // ← ex: "148 BPM"  (laisser vide pour masquer)
-    soundcloudUrl: '',  // ← lien SoundCloud
-    coverImage:    '',  // ← "assets/releases/release-1.jpg"
+    soundcloudUrl: 'https://soundcloud.com/mathieu-gallet-798254857/pacman',  // ← lien SoundCloud
+    coverImage:    'assets/releases/pacman-boubou.jpg',  // ← "assets/releases/release-1.jpg"
   },
   {
     id: 2,
-    title: "",
-    artist: "",
-    year: "",
+    title: "Experimental Race",
+    artist: "K'gnard",
+    year: "2026",
     bpm: "",
-    soundcloudUrl: '',
-    coverImage:    '',  // ← "assets/releases/release-2.jpg"
+    soundcloudUrl: 'https://soundcloud.com/kilian-kiki-481422387/techno-pure-2',
+    coverImage:    'assets/releases/experimental-race-kgnard.jpg',  // ← "assets/releases/release-2.jpg"
   },
   {
     id: 3,
-    title: "",
-    artist: "",
-    year: "",
+    title: "To You",
+    artist: "BouBou",
+    year: "2026",
     bpm: "",
-    soundcloudUrl: '',
-    coverImage:    '',  // ← "assets/releases/release-3.jpg"
+    soundcloudUrl: 'https://soundcloud.com/mathieu-gallet-798254857/to-you',
+    coverImage:    'assets/releases/to-you-boubou.jpg',  // ← "assets/releases/release-3.jpg"
   },
   {
     id: 4,
-    title: "",
-    artist: "",
-    year: "",
+    title: "House Of The Underground",
+    artist: "K'gnard",
+    year: "2026",
     bpm: "",
-    soundcloudUrl: '',
-    coverImage:    '',  // ← "assets/releases/release-4.jpg"
+    soundcloudUrl: 'https://soundcloud.com/kilian-kiki-481422387/house-of-the-underground',
+    coverImage:    'assets/releases/house-of-the-underground.jpg',  // ← "assets/releases/release-4.jpg"
   },
 ]
 
@@ -256,8 +232,6 @@ export const DUOS = [
 
 // ─── RÉSEAUX SOCIAUX ──────────────────────────────────────────────────────────
 export const SOCIALS = {
-  instagram:      '',   // ← ex: "https://instagram.com/shymenrecords"
-  soundcloud:     '',   // ← ex: "https://soundcloud.com/shymenrecords"
-  residentAdvisor:'',   // ← ex: "https://ra.co/promoters/shymenrecords"
-  boilerRoom:     '',   // ← ex: "https://boilerroom.tv/..."
+  instagram:      'https://www.instagram.com/shymen_records',   // ← ex: "https://instagram.com/shymenrecords"
+  soundcloud:     'https://soundcloud.com/shymen-records',   // ← ex: "https://soundcloud.com/shymenrecords"
 }
