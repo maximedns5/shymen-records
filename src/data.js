@@ -198,10 +198,10 @@ export const PAST_EVENTS = [
     name: "No Scrum No Win",
     date: "",           // ← ex: "Jan 2025"
     photos: [
-      'assets/archive/no-scrum/photo-1.jpg',
-      'assets/archive/no-scrum/photo-2.jpeg',
-      'assets/archive/no-scrum/photo-3.jpeg',
-      'assets/archive/no-scrum/photo-4.jpg',
+      'assets/archive/no-scrum/photo-1.png',
+      'assets/archive/no-scrum/photo-2.png',
+      'assets/archive/no-scrum/photo-3.png',
+      'assets/archive/no-scrum/photo-4.png',
     ],
   },
 ]
