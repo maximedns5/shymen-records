@@ -132,7 +132,7 @@ export const RELEASES = [
     year: "2026",           // ← année de sortie, ex: "2025"
     bpm: "",            // ← ex: "148 BPM"  (laisser vide pour masquer)
     soundcloudUrl: 'https://soundcloud.com/mathieu-gallet-798254857/pacman',  // ← lien SoundCloud
-    coverImage:    'assets/releases/pacman-boubou.jpg',  // ← "assets/releases/release-1.jpg"
+    coverImage:    'assets/releases/pacman-boubou.png',  // ← "assets/releases/release-1.jpg"
   },
   {
     id: 2,
@@ -141,7 +141,7 @@ export const RELEASES = [
     year: "2026",
     bpm: "",
     soundcloudUrl: 'https://soundcloud.com/kilian-kiki-481422387/techno-pure-2',
-    coverImage:    'assets/releases/experimental-race-kgnard.jpg',  // ← "assets/releases/release-2.jpg"
+    coverImage:    'assets/releases/experimental-race-kgnard.png',  // ← "assets/releases/release-2.jpg"
   },
   {
     id: 3,
@@ -150,16 +150,16 @@ export const RELEASES = [
     year: "2026",
     bpm: "",
     soundcloudUrl: 'https://soundcloud.com/mathieu-gallet-798254857/to-you',
-    coverImage:    'assets/releases/to-you-boubou.jpg',  // ← "assets/releases/release-3.jpg"
+    coverImage:    'assets/releases/to-you-boubou.png',  // ← "assets/releases/release-3.jpg"
   },
   {
     id: 4,
     title: "House Of The Underground",
     artist: "K'gnard",
-    year: "2026",
+    year: "2025",
     bpm: "",
     soundcloudUrl: 'https://soundcloud.com/kilian-kiki-481422387/house-of-the-underground',
-    coverImage:    'assets/releases/house-of-the-underground.jpg',  // ← "assets/releases/release-4.jpg"
+    coverImage:    'assets/releases/house-of-the-underground-kgnard.png',  // ← "assets/releases/release-4.jpg"
   },
 ]
 
