@@ -204,7 +204,6 @@ export const PAST_EVENTS = [
       'assets/archive/no-scrum-no-win/photo-2.jpeg',
       'assets/archive/no-scrum-no-win/photo-3.jpeg',
       'assets/archive/no-scrum-no-win/photo-4.jpg',
-      'assets/archive/no-scrum-no-win/photo-5.jpg',
     ],
   },
 ]
