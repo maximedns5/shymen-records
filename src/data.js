@@ -188,11 +188,9 @@ export const PAST_EVENTS = [
     name: "La Java",
     date: "",           // ← ex: "Mar 2025"
     photos: [
-      'public/assets/archive/la-java/photo-1.jpg',   // ← mets le fichier ici
-      'public/assets/archive/la-java/photo-2.jpg',
-      'public/assets/archive/la-java/photo-3.jpg',
-      'public/assets/archive/la-java/photo-4.jpg',
-      'public/assets/archive/la-java/photo-5.jpg',
+      'assets/archive/la-java/photo-1.jpg',   // ← mets le fichier ici
+      'assets/archive/la-java/photo-2.jpg',
+      'assets/archive/la-java/photo-3.jpg',
     ],
   },
   {
@@ -200,10 +198,10 @@ export const PAST_EVENTS = [
     name: "No Scrum No Win",
     date: "",           // ← ex: "Jan 2025"
     photos: [
-      'public/assets/archive/no-scrum-no-win/photo-1.jpg',
-      'public/assets/archive/no-scrum-no-win/photo-2.jpeg',
-      'public/assets/archive/no-scrum-no-win/photo-3.jpeg',
-      'public/assets/archive/no-scrum-no-win/photo-4.jpg',
+      'assets/archive/no-scrum-no-win/photo-1.jpg',
+      'assets/archive/no-scrum-no-win/photo-2.jpeg',
+      'assets/archive/no-scrum-no-win/photo-3.jpeg',
+      'assets/archive/no-scrum-no-win/photo-4.jpg',
     ],
   },
 ]
