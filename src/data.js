@@ -105,9 +105,9 @@ export const EVENTS = [
     id: 1,
     date: "SAM · 18 JUILLET 2026",
     name: "PANIC ROOM",
-    venue: "Warehouse 23",
+    venue: "101 Rue Amelot",
     city: "Paris",
-    lineup: ["Flèche b2b K'gnard", "Jeff Pesos", "BouBou"],
+    lineup: ["SKINNYFAT", "JEE", "YOUPI", "PADRINO", "K'GNARD", "FLÈCHE"],
     tags: ["All night", "Indoor"],
     ticketUrl: 'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://shotgun.live/events/infinite-voltage"
     infoUrl:   'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://facebook.com/events/123456"
