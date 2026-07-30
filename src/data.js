@@ -184,7 +184,7 @@ export const RELEASES = [
 //
 export const PAST_EVENTS = [
   {
-    id: 1,
+    id: 2,
     name: "La Java",
     date: "",           // ← ex: "Mar 2025"
     photos: [
@@ -194,7 +194,7 @@ export const PAST_EVENTS = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     name: "No Scrum No Win",
     date: "",           // ← ex: "Jan 2025"
     photos: [
@@ -204,6 +204,17 @@ export const PAST_EVENTS = [
       'assets/archive/no-scrum/photo-4.png',
     ],
   },
+  {
+    id: 1,
+    name: "PANIC ROOM",
+    date: "18. Juillet 2026",           // ← ex: "Jan 2025"
+    photos: [
+      'assets/archive/panic-room/photo-1.png',
+      'assets/archive/panic-room/photo-2.png',
+      'assets/archive/panic-room/photo-3.png',
+      'assets/archive/panic-room/photo-4.png',
+    ],
+  }
 ]
 
 // ─── DUOS ─────────────────────────────────────────────────────────────────────
