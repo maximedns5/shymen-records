@@ -184,6 +184,21 @@ export const RELEASES = [
 //
 export const PAST_EVENTS = [
   {
+    id: 1,
+    name: "PANIC ROOM",
+    date: "18. Juillet 2026",           // ← ex: "Jan 2025"
+    photos: [
+      'assets/archive/panic-room/photo-1.jpg',
+      'assets/archive/panic-room/photo-2.jpg',
+      'assets/archive/panic-room/photo-3.jpg',
+      'assets/archive/panic-room/photo-4.jpg',
+      'assets/archive/panic-room/photo-5.jpg',
+      'assets/archive/panic-room/photo-6.jpg',
+      'assets/archive/panic-room/photo-8.jpg',
+      'assets/archive/panic-room/photo-7.jpg'
+    ],
+  },
+  {
     id: 2,
     name: "La Java",
     date: "",           // ← ex: "Mar 2025"
@@ -204,21 +219,6 @@ export const PAST_EVENTS = [
       'assets/archive/no-scrum/photo-4.png',
     ],
   },
-  {
-    id: 1,
-    name: "PANIC ROOM",
-    date: "18. Juillet 2026",           // ← ex: "Jan 2025"
-    photos: [
-      'assets/archive/panic-room/photo-1.jpg',
-      'assets/archive/panic-room/photo-2.jpg',
-      'assets/archive/panic-room/photo-3.jpg',
-      'assets/archive/panic-room/photo-4.jpg',
-      'assets/archive/panic-room/photo-5.jpg',
-      'assets/archive/panic-room/photo-6.jpg',
-      'assets/archive/panic-room/photo-8.jpg',
-      'assets/archive/panic-room/photo-7.jpg'
-    ],
-  }
 ]
 
 // ─── DUOS ─────────────────────────────────────────────────────────────────────
