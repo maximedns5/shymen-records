@@ -103,15 +103,15 @@ export const MEMBERS = [
 export const EVENTS = [
   {
     id: 1,
-    date: "SAM · 18 JUILLET 2026",
-    name: "PANIC ROOM",
-    venue: "101 Rue Amelot",
-    city: "Paris",
-    lineup: ["SKINNYFAT", "JEE", "YOUPI", "PADRINO", "K'GNARD", "FLÈCHE"],
-    tags: ["All night", "Indoor"],
-    ticketUrl: 'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://shotgun.live/events/infinite-voltage"
-    infoUrl:   'https://shotgun.live/fr/events/shymen?utm_source=collectif-shymen-records&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp4VbexcEmCQ6_zBbfre2n477w5c6bh22HeY9Sx4vEDNGHOPcXwgjOSLFAgEL_aem_u5jhqbeE4XtAPXim3XLGYw',              // ← ex: "https://facebook.com/events/123456"
-    flyer:     'assets/events/panic-room-flyer.jpeg',              // ← ex: "assets/events/infinite-voltage.jpg"
+    date: "MER · 12 AOUT 2026",
+    name: "DAX - CHEZ NOUS",
+    venue: "8 Cours Gallieni",
+    city: "DAX",
+    lineup: ["JEE", "YOUPI", "K'GNARD", "FLÈCHE"],
+    tags: ["20h30 - 22h30", "Indoor & Outdoor"],
+    ticketUrl: "",              // ← ex: "https://shotgun.live/events/infinite-voltage"
+    infoUrl:   "https://www.instagram.com/p/Dauyy5jshUI/",              // ← ex: "https://facebook.com/events/123456"
+    flyer:     'assets/events/chez-nous-flyer.png',              // ← ex: "assets/events/infinite-voltage.jpg"
   },
 ]
 
