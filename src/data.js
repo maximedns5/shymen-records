@@ -209,10 +209,14 @@ export const PAST_EVENTS = [
     name: "PANIC ROOM",
     date: "18. Juillet 2026",           // ← ex: "Jan 2025"
     photos: [
-      'assets/archive/panic-room/photo-1.png',
-      'assets/archive/panic-room/photo-2.png',
-      'assets/archive/panic-room/photo-3.png',
-      'assets/archive/panic-room/photo-4.png',
+      'assets/archive/panic-room/photo-1.jpg',
+      'assets/archive/panic-room/photo-2.jpg',
+      'assets/archive/panic-room/photo-3.jpg',
+      'assets/archive/panic-room/photo-4.jpg',
+      'assets/archive/panic-room/photo-5.jpg',
+      'assets/archive/panic-room/photo-6.jpg',
+      'assets/archive/panic-room/photo-8.jpg',
+      'assets/archive/panic-room/photo-7.jpg'
     ],
   }
 ]
